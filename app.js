@@ -10,11 +10,22 @@ require("dotenv").config();
 
 const app = express();
 
+//security
+const helmet = require("helmet");
+const xss = require("xss-clean");
+const cors = require("cors");
+const mongoSanitize = require("express-mongo-sanitize");
+
 //cors config
 const corsOptions = {
   origin: ["http://localhost:5173"],
 };
 //middleware
+app.set("trust proxy", 1);
+app.use(helmet());
+// app.use(cors());
+// app.use(xss());
+app.use(mongoSanitize());
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.static(path.resolve(__dirname, "./client/dist")));
